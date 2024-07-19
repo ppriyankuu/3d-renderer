@@ -8,6 +8,8 @@ bool is_running = false;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
+uint32_t* color_buffer = NULL;
+
 // USER-DEFINED FUNCTIONS
 
 // setting up the SDL environment
@@ -50,11 +52,62 @@ bool initialize_window(void) {
     return true;
 }
 
+void setup(void){
+    // setting up the color_buffer
+    color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * widow_height);
+}
+
+// for input validation and processing
+void process_input(void){
+    // datatype of SDL_Event stores the information about an event.
+    // e.g. keypress, mouse movement, window close, etc. 
+    SDL_Event event;
+    //SDL_PollEvent polls for currently pending events. 
+    // if there are events in the queue, it fills the 'event' variable with the event data
+    // and removes it from the queue. 
+    SDL_PollEvent(&event);
+
+    // indentifying the input provided
+    switch(event.type){
+        case SDL_QUIT: // if the user attempts to close the window; is_running = false
+            is_running = false;
+            break;
+        
+        case SDL_KEYDOWN: // handles the event where a key is pressed on the keyboard
+            if(event.key.keysym.sym == SDLK_ESCAPE) // checks if the key pressed is 'esc'
+                is_running = false;
+            break;
+    }
+}
+
+void update(void){}
+
+// handling the rendering process
+void render(void){
+    // this functions sets the color used for drawing operations in the renderer.
+    // 'renderer' is the SDL_Renderer object used for rendering. 
+    // '250, 10, 89, 255' ; values for RGB + the opacity
+    SDL_SetRenderDrawColor(renderer, 250, 10, 89, 255); 
+    // this function clears the current rendering target 
+    // with the drawing color set by SDL_SetRenderDrawColor
+    SDL_RenderClear(renderer);
+    // this function updates the screen with any rendering performed  
+    // since the previous call. it swaps the back buffer with the fron buffer,
+    // displaying the current rendering result on the screen.
+    SDL_RenderPresent(renderer);
+}
 
 // MAIN FUNCTION
 int main(void){
-
     is_running = initialize_window();
+
+    setup();
+
+    while(is_running){
+        process_input();
+        update();
+        render();
+    }
 
     return 0;
 }
