@@ -1,6 +1,6 @@
 # 3D Renderer
 
-This project is a 3D renderer written in C that takes an input object file (.obj) and converts it into a 2D image for display on the screen. The project uses the Simple DirectMedia Layer (SDL) library for rendering.
+This project is a 3D renderer written in C (from scratch) that takes an input object file (.obj) and converts it into a 2D image for display on the screen. The project uses the Simple DirectMedia Layer (SDL) library for rendering.
 
 ## Features
 
