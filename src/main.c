@@ -26,6 +26,20 @@ bool initialize_window(void) {
         return false;
     }
 
+    // retrieving the current display mode of the screen.
+    // SDL_DisplayMode contains the info about the display mode,
+    // such as the width, height, refresh rate, and pixels format
+    SDL_DisplayMode display_mode; 
+    // this function retrieves the current display mode of the display screen
+    // 1st argument is the index of the display device. 
+    // 0 index is of the primary device.
+    // 2nd argument is the pointer to the SDL_DisplayMode structure
+    SDL_GetCurrentDisplayMode(0, &display_mode);
+
+    // updating window width and height
+    window_width = display_mode.w;
+    window_height = display_mode.h;
+
     // creating an SDL window
     window = SDL_CreateWindow(
         NULL, // title of the window; we don't want any :)
@@ -52,6 +66,12 @@ bool initialize_window(void) {
         fprintf(stderr, "Error creating SDL renderer \n");
         return false;
     }
+
+    // setting the SDL window to fullscreen.
+    // 'window' is the pointer to the SDL_Window structure
+    // SDL_WINDOW_FULLSCREEN is a flag that indicates you want --
+    // to switch the window to fullscreen mode
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
