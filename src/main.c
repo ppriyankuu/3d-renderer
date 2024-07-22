@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "headers/display.h"
+#include "headers/vector.h"
 
 // GLOBAL VARIABLES
 bool is_running = false;
@@ -59,8 +60,9 @@ void render(void){
     // with the drawing color set by SDL_SetRenderDrawColor
     SDL_RenderClear(renderer);
 
-    // draw_grid();
-    draw_rect(400, 500, 400, 500, 0xFF333333);
+    draw_grid();
+    draw_pixel(200, 200, 0xFFFF00FF);
+    // draw_rect(400, 500, 400, 500, 0xFF333333);
 
     // comments above ^
     render_color_buffer();
@@ -77,6 +79,8 @@ int main(void){
     is_running = initialize_window();
 
     setup();
+
+    vec3_t my_vector = {2.0, 3.0, 4.0};
 
     while(is_running){
         process_input();
