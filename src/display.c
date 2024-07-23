@@ -71,7 +71,6 @@ bool initialize_window(void) {
     return true;
 }
 
-// EXERCISE FUNCTION 1
 void draw_grid(void){
     for(int y = 0; y < window_height; y += 20){
         for(int x = 0; x < window_width; x += 20){
@@ -80,19 +79,21 @@ void draw_grid(void){
     }
 }
 
-// EXERCISE FUNCTION 2
+void draw_pixel(int x, int y, uint32_t color){
+    if(x < 0 || y < 0 || x >= window_width || y >= window_height) return;
+
+    color_buffer[(window_width * y) + x] = color;
+}
+
 void draw_rect(int x, int y, int width, int height, uint32_t color){
     for(int i = 0; i <= height; ++i){
         for(int j = 0; j <= width; ++j){
-            color_buffer[(window_width * (i + y)) + (j + x)] = color;
+            int current_x = x + i;
+            int current_y = y + j;
+            draw_pixel(current_x, current_y, color);
+            // color_buffer[(window_width * (i + y)) + (j + x)] = color;
         }
     }
-}
-
-void draw_pixel(int x, int y, uint32_t color){
-    if(x >= window_width && y >= window_height) return;
-
-    color_buffer[(window_width * y) + x] = color;
 }
 
 // updating the texture with the color_buffer data + rendering it to the screen.
