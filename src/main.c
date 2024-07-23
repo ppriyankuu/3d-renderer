@@ -9,6 +9,13 @@
 // GLOBAL VARIABLES
 bool is_running = false;
 
+#define N_POINTS (9 * 9 * 9)
+// representing a 9 x 9 x 9 cube filled with 3D vectors points
+vec3_t cube_points[N_POINTS]; 
+vec2_t projected_points[N_POINTS];  
+
+int FOV_factor = 128;
+
 // USER-DEFINED FUNCTIONS
 
 void setup(void){
@@ -23,6 +30,19 @@ void setup(void){
         window_width,
         window_height
     );
+
+    int points_count = 0;
+
+    // loading the array of vectors
+    // from -1 to 1 in the graph/plane
+    for(float x = -1; x <= 1; x += 0.25){
+        for(float y = -1; y <= 1; y += 0.25){
+            for(float z = -1; z <= 1; z += 0.24){
+                vec3_t new_point = {.x = x, .y = y, .z = z};
+                cube_points[points_count++] = new_point;
+            }
+        }
+    }
 }
 
 // for input validation and processing
@@ -48,21 +68,39 @@ void process_input(void){
     }
 }
 
-void update(void){}
+// function that receives a 3D vector and returns a 2D point
+vec2_t project(vec3_t point){
+    vec2_t projected_point = {.x = (FOV_factor * point.x), .y = (FOV_factor * point.y)};
+    return projected_point;
+}
+
+void update(void){
+    for(int i = 0; i < N_POINTS; ++i){
+        vec3_t point = cube_points[i];
+
+        vec2_t projected_point = project(point);
+        // saving the projected 2D point in the 'projected_points' array
+        projected_points[i] = projected_point;
+    }
+}
 
 // handling the rendering process
 void render(void){
-    // this functions sets the color used for drawing operations in the renderer.
-    // 'renderer' is the SDL_Renderer object used for rendering. 
-    // '250, 10, 89, 255' ; values for RGB + the opacity
-    SDL_SetRenderDrawColor(renderer, 250, 10, 89, 255); 
-    // this function clears the current rendering target 
-    // with the drawing color set by SDL_SetRenderDrawColor
-    SDL_RenderClear(renderer);
-
     draw_grid();
-    draw_pixel(200, 200, 0xFFFF00FF);
-    // draw_rect(400, 500, 400, 500, 0xFF333333);
+
+    // looping all projected points and rendering them
+    for(int i = 0; i < N_POINTS; ++i){
+        vec2_t projected_point = projected_points[i];
+        draw_rect(
+            projected_point.x + (window_width / 2), 
+            projected_point.y + (window_height / 2), 
+            4, 
+            4, 
+            0xFFFF00FF
+        );
+    }
+
+    // draw_pixel(200, 200, 0xFFFF00FF);
 
     // comments above ^
     render_color_buffer();
@@ -79,8 +117,6 @@ int main(void){
     is_running = initialize_window();
 
     setup();
-
-    vec3_t my_vector = {2.0, 3.0, 4.0};
 
     while(is_running){
         process_input();
