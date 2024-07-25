@@ -10,11 +10,14 @@
 bool is_running = false;
 
 #define N_POINTS (9 * 9 * 9)
+
+
 // representing a 9 x 9 x 9 cube filled with 3D vectors points
 vec3_t cube_points[N_POINTS]; 
 vec2_t projected_points[N_POINTS];  
 
-int FOV_factor = 128;
+vec3_t camera_view = {.x = 0, .y = 0, .z = -5};
+int FOV_factor = 640;
 
 // USER-DEFINED FUNCTIONS
 
@@ -70,13 +73,18 @@ void process_input(void){
 
 // function that receives a 3D vector and returns a 2D point
 vec2_t project(vec3_t point){
-    vec2_t projected_point = {.x = (FOV_factor * point.x), .y = (FOV_factor * point.y)};
+    vec2_t projected_point = {
+        .x = (FOV_factor * point.x) / point.z, 
+        .y = (FOV_factor * point.y) / point.z
+    };
     return projected_point;
 }
 
 void update(void){
     for(int i = 0; i < N_POINTS; ++i){
         vec3_t point = cube_points[i];
+
+        point.z -= camera_view.z;
 
         vec2_t projected_point = project(point);
         // saving the projected 2D point in the 'projected_points' array
