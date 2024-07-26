@@ -17,6 +17,8 @@ vec3_t cube_points[N_POINTS];
 vec2_t projected_points[N_POINTS];  
 
 vec3_t camera_view = {.x = 0, .y = 0, .z = -5};
+vec3_t cube_rotation = {.x = 0, .y = 0, .z = 0};
+
 int FOV_factor = 640;
 
 // USER-DEFINED FUNCTIONS
@@ -81,12 +83,22 @@ vec2_t project(vec3_t point){
 }
 
 void update(void){
+
+    cube_rotation.x += 0.01;
+    cube_rotation.y += 0.01;
+    cube_rotation.z += 0.01;
+
     for(int i = 0; i < N_POINTS; ++i){
         vec3_t point = cube_points[i];
 
-        point.z -= camera_view.z;
+        vec3_t transformed_point = vec3_rotate_x(point, cube_rotation.x);
+        transformed_point = vec3_rotate_y(transformed_point, cube_rotation.y);
+        transformed_point = vec3_rotate_z(transformed_point, cube_rotation.z);
 
-        vec2_t projected_point = project(point);
+        // translating the points away from the camera
+        transformed_point.z -= camera_view.z;
+
+        vec2_t projected_point = project(transformed_point);
         // saving the projected 2D point in the 'projected_points' array
         projected_points[i] = projected_point;
     }
@@ -104,7 +116,7 @@ void render(void){
             projected_point.y + (window_height / 2), 
             4, 
             4, 
-            0xFFFF00FF
+            0xFF3300FF
         );
     }
 
