@@ -67,7 +67,7 @@ vec2_t project(vec3_t point){
 }
 
 void update(void){
-    int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks()- previous_frame_time);
+    int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
     if(time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) SDL_Delay(time_to_wait);
 
     previous_frame_time = SDL_GetTicks();
@@ -118,9 +118,6 @@ void render(void){
         draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFF3333FF);
     }
 
-    // draw_pixel(200, 200, 0xFFFF00FF);
-
-    // comments above ^
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
