@@ -8,9 +8,9 @@
 
 // GLOBAL VARIABLES
 bool is_running = false;
+int previous_frame_time = 0;
 
 #define N_POINTS (9 * 9 * 9)
-
 
 // representing a 9 x 9 x 9 cube filled with 3D vectors points
 vec3_t cube_points[N_POINTS]; 
@@ -83,6 +83,9 @@ vec2_t project(vec3_t point){
 }
 
 void update(void){
+    while(!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
+
+    previous_frame_time = SDL_GetTicks();
 
     cube_rotation.x += 0.01;
     cube_rotation.y += 0.01;
