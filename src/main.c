@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "headers/array.h"
 #include "headers/display.h"
 #include "headers/vector.h"
 #include "headers/mesh.h"
@@ -11,7 +12,7 @@
 bool is_running = false;
 int previous_frame_time = 0;
 
-triangle_t triangles_to_render[N_MESH_FACES];
+triangle_t* triangles_to_render = NULL;
 
 vec3_t camera_view = {.x = 0, .y = 0, .z = -5};
 vec3_t cube_rotation = {.x = 0, .y = 0, .z = 0};
@@ -72,6 +73,8 @@ void update(void){
 
     previous_frame_time = SDL_GetTicks();
 
+    triangles_to_render = NULL;
+
     cube_rotation.x += 0.01;
     cube_rotation.y += 0.01;
     cube_rotation.z += 0.01;
@@ -103,7 +106,7 @@ void update(void){
             projected_triangle.points[j] = projected_point;
         }
 
-        triangles_to_render[i] = projected_triangle;
+        array_push(triangles_to_render, projected_triangle);
     }
 }
 
@@ -111,7 +114,8 @@ void update(void){
 void render(void){
     draw_grid();
 
-    for(int i = 0; i < N_MESH_FACES; ++i){
+    int num_of_triangles = array_length(triangles_to_render);
+    for(int i = 0; i < num_of_triangles; ++i){
         triangle_t triangle = triangles_to_render[i];
 
         // drawing vectex points
@@ -131,8 +135,8 @@ void render(void){
         );
     }
 
-    // draw_line(100, 200, 300, 50, 0xFF00FF00);
-
+    array_free(triangles_to_render);
+    
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
