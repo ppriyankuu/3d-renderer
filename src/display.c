@@ -151,8 +151,6 @@ void clear_color_buffer(uint32_t color){
 
 // cleanup function
 void destroy_window(void){
-    // free-up the allocated memory (color_buffer)
-    free(color_buffer);
     // destroy the SDL_Renderer
     SDL_DestroyRenderer(renderer);
     // destroy the SDL_Window
