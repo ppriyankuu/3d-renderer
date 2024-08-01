@@ -33,7 +33,7 @@ void setup(void){
         window_height
     );
 
-    load_cube_mesh_data();
+    load_obj_file_data("./assets/cube.obj");
 }
 
 // for input validation and processing
@@ -161,11 +161,11 @@ int main(void){
 
     setup();
 
-    while(is_running){
-        process_input();
-        update();
-        render();
-    }
+    // while(is_running){
+    //     process_input();
+    //     update();
+    //     render();
+    // }
 
     destroy_window();
     free_resources();

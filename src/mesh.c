@@ -49,3 +49,16 @@ void load_cube_mesh_data(void){
         array_push(mesh.faces, cube_face);
     }
 }
+
+void load_obj_file_data(char* filename){
+    FILE* file = fopen(filename, "r"); // opening the file (using the filepath) with 'read' access    
+
+    char line[512];
+
+    while(fgets(line, 512, file)){
+        printf("LINE : %s", line);
+    }
+
+    fclose(file); // closing the file
+}
+
