@@ -161,11 +161,11 @@ int main(void){
 
     setup();
 
-    // while(is_running){
-    //     process_input();
-    //     update();
-    //     render();
-    // }
+    while(is_running){
+        process_input();
+        update();
+        render();
+    }
 
     destroy_window();
     free_resources();
