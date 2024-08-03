@@ -52,7 +52,8 @@ void load_cube_mesh_data(void){
 }
 
 void load_obj_file_data(char* filename){
-    FILE* file = fopen(filename, "r"); // opening the file (using the filepath) with 'read' access    
+    FILE* file;
+    file = fopen(filename, "r"); // opening the file (using the filepath) with 'read' access    
 
     if(!file){
         printf("Error: Could not open the file %s\n", filename);
@@ -74,7 +75,7 @@ void load_obj_file_data(char* filename){
             int normal_indices[3];
             sscanf(
                 line, 
-                "f %d%d%d %d%d%d %d%d%d", 
+                "f %d/%d/%d %d/%d/%d %d/%d/%d", 
                 &vertex_indices[0], &texture_indices[0], &normal_indices[0],
                 &vertex_indices[1], &texture_indices[1], &normal_indices[1],
                 &vertex_indices[2], &texture_indices[2], &normal_indices[2]
