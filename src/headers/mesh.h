@@ -8,11 +8,11 @@
 #define N_CUBE_FACES (6 * 2)
 
 extern vec3_t cube_vertices[N_CUBE_VERTICES];
-extern fact_t mesh_faces[N_CUBE_FACES];
+extern face_t mesh_faces[N_CUBE_FACES];
 
 typedef struct {
     vec3_t* vertices; // dynamic array of vertices
-    fact_t* faces;    //   "       "   of faces
+    face_t* faces;    //   "       "   of faces
     vec3_t rotation;  // rotation with x, y, and z values
 } mesh_t;
 

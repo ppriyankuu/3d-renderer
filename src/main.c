@@ -14,7 +14,7 @@ int previous_frame_time = 0;
 
 triangle_t* triangles_to_render = NULL;
 
-vec3_t camera_view = {.x = 0, .y = 0, .z = -5};
+vec3_t camera_view = {0, 0, 0};
 
 int FOV_factor = 640;
 
@@ -83,14 +83,14 @@ void update(void){
     int num_of_faces = array_length(mesh.faces);
 
     for(int i = 0; i < num_of_faces; ++i){
-        fact_t mesh_face = mesh.faces[i];
+        face_t mesh_face = mesh.faces[i];
 
         vec3_t face_vertices[3];
         face_vertices[0] = mesh.vertices[mesh_face.a - 1];
         face_vertices[1] = mesh.vertices[mesh_face.b - 1];
         face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 
-        triangle_t projected_triangle;
+        vec3_t transformed_vertices[3];
 
         for(int j = 0; j < 3; ++j){
             vec3_t transformed_vertex = face_vertices[j];
@@ -99,9 +99,34 @@ void update(void){
             transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
             transformed_vertex = vec3_rotate_z(transformed_vertex, mesh.rotation.z);
 
-            transformed_vertex.z -= camera_view.z;
+            transformed_vertex.z += 5;
 
-            vec2_t projected_point = project(transformed_vertex);
+            // saving the transformed vertex in the array of transformed_vertices
+            transformed_vertices[j] = transformed_vertex;
+        }
+        
+        vec3_t vector_A = transformed_vertices[0];
+        vec3_t vector_B = transformed_vertices[1];
+        vec3_t vector_C = transformed_vertices[2];
+
+        vec3_t vector_AB = vec3_sub(vector_B, vector_A);
+        vec3_t vector_AC = vec3_sub(vector_C, vector_A);
+
+        vec3_t vector_normal = vec3_cross(vector_AB, vector_AC);
+
+        vec3_t camera_ray = vec3_sub(camera_view, vector_A);
+
+        float dot_normal_camera = vec3_dot(vector_normal, camera_ray);
+
+        if(dot_normal_camera < 0){
+            continue;
+        }
+
+        triangle_t projected_triangle;
+
+        // projection loop for the 3 vertices
+        for(int j = 0; j < 3; ++j){
+            vec2_t projected_point = project(transformed_vertices[j]);
 
             projected_point.x += (window_width / 2);
             projected_point.y += (window_height / 2);
