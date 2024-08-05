@@ -113,6 +113,7 @@ void update(void){
         vec3_t vector_AC = vec3_sub(vector_C, vector_A);
 
         vec3_t vector_normal = vec3_cross(vector_AB, vector_AC);
+        vec3_normalise(&vector_normal);        
 
         vec3_t camera_ray = vec3_sub(camera_view, vector_A);
 
