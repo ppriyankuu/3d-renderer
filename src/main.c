@@ -111,6 +111,8 @@ void update(void){
 
         vec3_t vector_AB = vec3_sub(vector_B, vector_A);
         vec3_t vector_AC = vec3_sub(vector_C, vector_A);
+        vec3_normalise(&vector_AB);        
+        vec3_normalise(&vector_AC);        
 
         vec3_t vector_normal = vec3_cross(vector_AB, vector_AC);
         vec3_normalise(&vector_normal);        
@@ -153,6 +155,16 @@ void render(void){
         draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFF00FF);
 
         // drawing triangle lines
+        draw_filled_triangle(
+            triangle.points[0].x, 
+            triangle.points[0].y,
+            triangle.points[1].x,
+            triangle.points[1].y,
+            triangle.points[2].x,
+            triangle.points[2].y,
+            0xFFFFFFFF
+        );
+
         draw_triangle(
             triangle.points[0].x, 
             triangle.points[0].y,
@@ -160,7 +172,7 @@ void render(void){
             triangle.points[1].y,
             triangle.points[2].x,
             triangle.points[2].y,
-            0xFF00FF00
+            0xFF000000
         );
     }
 
