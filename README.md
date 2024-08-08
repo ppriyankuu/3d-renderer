@@ -3,8 +3,8 @@
 This project is a 3D renderer written in C (from scratch) that takes an input object file (.obj) and converts it into a 2D image for display on the screen. The project uses the Simple DirectMedia Layer (SDL) library for rendering.
 
 <p align="center">
-  <img src="./images/Screenshot_20240808_214706.png" alt="Image reference 01" width="45%">
-  <img src="./images/Screenshot_20240808_214749.png" alt="Image reference 02" width="45%">
+  <img src="./images/Screenshot_20240808_214706.png" alt="Image reference 01" width="300" height="200">
+  <img src="./images/Screenshot_20240808_214749.png" alt="Image reference 02" width="300" height="200">
 </p>
 
 ## Features
