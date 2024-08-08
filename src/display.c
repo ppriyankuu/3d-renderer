@@ -1,6 +1,9 @@
 #include "headers/display.h"
 
 // GLOBAL VARIABLES
+enum cull_method cull_method;
+enum render_method render_method;
+
 int window_width = 800;
 int window_height = 600;
 

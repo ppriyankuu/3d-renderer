@@ -8,9 +8,24 @@
 #define FPS 30
 #define FRAME_TARGET_TIME (1000 / FPS) // how long should 1 frame take (in mili-secs)
 
+enum cull_method {
+    CULL_NONE,
+    CULL_BACKFACE
+};
+
+enum render_method {
+    RENDER_WIRE,
+    RENDER_WIRE_VERTEX,
+    RENDER_FILL_TRIANGLE,
+    RENDER_FILL_TRIANGLE_WIRE,
+};
+
 // GLOBAL VARIABLES
 // 'extern' is used to declare a variable or function
 // that is defined in some other file (external file) 
+extern enum cull_method cull_method;
+extern enum render_method render_method;
+
 extern SDL_Window* window; 
 extern SDL_Renderer* renderer;
 
