@@ -7,6 +7,7 @@
 #include "headers/display.h"
 #include "headers/vector.h"
 #include "headers/mesh.h"
+#include "headers/sort.h"
 
 // GLOBAL VARIABLES
 bool is_running = false;
@@ -163,17 +164,34 @@ void update(void){
             projected_points[j].y += (window_height / 2);
         }
         
+        // calucating the average depth for each face based on the 
+        // vertices after transformation
+        float avg_depth = (transformed_vertices[0].z + transformed_vertices[1].z + transformed_vertices[2].z) / 3.0; 
+
         triangle_t projected_triangle = {
             .points = {
                 { projected_points[0].x, projected_points[0].y },
                 { projected_points[1].x, projected_points[1].y },
                 { projected_points[2].x, projected_points[2].y },
             },
-            .color = mesh_face.color 
+            .color = mesh_face.color,
+            .avg_depth = avg_depth 
         };
-
         array_push(triangles_to_render, projected_triangle);
     }
+
+    // sorting the triangles to render by their average depth
+    int num_of_triangles = array_length(triangles_to_render);
+    sort_triangles(triangles_to_render, num_of_triangles);
+    // for(int i = 0; i < num_of_triangles; ++i){
+    //     for(int j = i; j < num_of_triangles; ++j){
+    //         if(triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth){
+    //             triangle_t temp =  triangles_to_render[i];
+    //             triangles_to_render[i] = triangles_to_render[j];
+    //             triangles_to_render[j] = temp;
+    //         }
+    //     }
+    // }
 }
 
 // handling the rendering process
