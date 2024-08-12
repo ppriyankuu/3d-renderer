@@ -140,15 +140,17 @@ void update(void){
             // creating a world matrix combining scale, rotation, and translation matrices.
             mat4_t world_matrix = mat4_identity();
             
-            // SCALE
+            //////// ORDER of transformation /////////
+            // first SCALE
+            // then ROTATE
+            // lastly TRANSLATE
+
             world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
             
-            // ROTATE
             world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_z, world_matrix);
 
-            // TRANSLATE
             world_matrix = mat4_mul_mat4(translation_matrix, world_matrix);
 
             transformed_vertex = mat4_mul_vec4(world_matrix, transformed_vertex);
