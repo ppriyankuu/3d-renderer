@@ -76,3 +76,13 @@ vec4_t mat4_mul_vec4(mat4_t m, vec4_t v) {
 
     return result;
 }
+
+mat4_t mat4_mul_mat4(mat4_t m, mat4_t n) {
+    mat4_t result;
+    for(int i = 0; i < 4; ++i){
+        for(int j = 0; j < 4; ++j){
+            result.m[i][j] = m.m[i][0] * n.m[0][j] + m.m[i][1] * n.m[1][j] + m.m[i][2] * n.m[2][j] + m.m[i][3] * n.m[3][j];
+        }
+    }
+    return result;
+}
