@@ -17,11 +17,9 @@ int previous_frame_time = 0;
 triangle_t* triangles_to_render = NULL;
 
 vec3_t camera_view = {0, 0, 0};
-
-int FOV_factor = 640;
+mat4_t projection_matrix;
 
 // USER-DEFINED FUNCTIONS
-
 void setup(void){
     // initialising render mode and triangle culling method
     render_method = RENDER_WIRE;
@@ -38,6 +36,14 @@ void setup(void){
         window_width,
         window_height
     );
+
+    float fov = 3.141592 / 3.0; // (PI / 3)
+    float aspect = (float)window_height / (float)window_width;
+    float znear = 0.1;
+    float zfar = 100.0;
+
+    // initialising the perspective projection matrix
+    projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
     load_cube_mesh_data();
     // load_obj_file_data("./assets/cube.obj");
@@ -85,15 +91,6 @@ void process_input(void){
     }
 }
 
-// function that receives a 3D vector and returns a 2D point
-vec2_t project(vec3_t point){
-    vec2_t projected_point = {
-        .x = (FOV_factor * point.x) / point.z, 
-        .y = (FOV_factor * point.y) / point.z
-    };
-    return projected_point;
-}
-
 void update(void){
     int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
     if(time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) SDL_Delay(time_to_wait);
@@ -106,8 +103,6 @@ void update(void){
     mesh.rotation.y += 0.01;
     mesh.rotation.z += 0.01;
 
-    // mesh.scale.x += 0.002;
-    // mesh.scale.y += 0.001;
     // mesh.translation.x += 0.01;
     // mesh.translation.y += 0.01;
     mesh.translation.z = 5.0;
@@ -182,15 +177,19 @@ void update(void){
         }
 
 
-        vec2_t projected_points[3];
+        vec4_t projected_points[3];
 
         // projection loop for the 3 vertices
         for(int j = 0; j < 3; ++j){
-            projected_points[j] = project(vec3_from_vec4(transformed_vertices[j]));
+            projected_points[j] = mat4_mul_vec4_project(projection_matrix, transformed_vertices[j]);
+
+            // scaling into the view
+            projected_points[j].x *= (window_width / 2.0);
+            projected_points[j].y *= (window_height / 2.0);
 
             // scaling and translating the projected_points to the middle of the screen
-            projected_points[j].x += (window_width / 2);
-            projected_points[j].y += (window_height / 2);
+            projected_points[j].x += (window_width / 2.0);
+            projected_points[j].y += (window_height / 2.0);
         }
         
         // calucating the average depth for each face based on the 
