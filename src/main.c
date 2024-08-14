@@ -9,6 +9,7 @@
 #include "headers/mesh.h"
 #include "headers/sort.h"
 #include "headers/matrix.h"
+#include "headers/light.h"
 
 // GLOBAL VARIABLES
 bool is_running = false;
@@ -45,8 +46,8 @@ void setup(void){
     // initialising the perspective projection matrix
     projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-    load_cube_mesh_data();
-    // load_obj_file_data("./assets/cube.obj");
+    // load_cube_mesh_data();
+    load_obj_file_data("./assets/f22.obj");
 }
 
 // for input validation and processing
@@ -100,8 +101,8 @@ void update(void){
     triangles_to_render = NULL;
 
     mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
-    mesh.rotation.z += 0.01;
+    // mesh.rotation.y += 0.01;
+    // mesh.rotation.z += 0.01;
 
     // mesh.translation.x += 0.01;
     // mesh.translation.y += 0.01;
@@ -154,23 +155,23 @@ void update(void){
             transformed_vertices[j] = transformed_vertex;
         }
         
+        vec3_t vector_A = vec3_from_vec4(transformed_vertices[0]);
+        vec3_t vector_B = vec3_from_vec4(transformed_vertices[1]);
+        vec3_t vector_C = vec3_from_vec4(transformed_vertices[2]);
+
+        vec3_t vector_AB = vec3_sub(vector_B, vector_A);
+        vec3_t vector_AC = vec3_sub(vector_C, vector_A);
+        vec3_normalise(&vector_AB);        
+        vec3_normalise(&vector_AC);        
+        
+        vec3_t vector_normal = vec3_cross(vector_AB, vector_AC);
+        vec3_normalise(&vector_normal);        
+
+        vec3_t camera_ray = vec3_sub(camera_view, vector_A);
+
+        float dot_normal_camera = vec3_dot(vector_normal, camera_ray);
+
         if(cull_method == CULL_BACKFACE){
-            vec3_t vector_A = vec3_from_vec4(transformed_vertices[0]);
-            vec3_t vector_B = vec3_from_vec4(transformed_vertices[1]);
-            vec3_t vector_C = vec3_from_vec4(transformed_vertices[2]);
-
-            vec3_t vector_AB = vec3_sub(vector_B, vector_A);
-            vec3_t vector_AC = vec3_sub(vector_C, vector_A);
-            vec3_normalise(&vector_AB);        
-            vec3_normalise(&vector_AC);        
-            
-            vec3_t vector_normal = vec3_cross(vector_AB, vector_AC);
-            vec3_normalise(&vector_normal);        
-
-            vec3_t camera_ray = vec3_sub(camera_view, vector_A);
-
-            float dot_normal_camera = vec3_dot(vector_normal, camera_ray);
-
             if(dot_normal_camera < 0){
                 continue;
             }
@@ -196,13 +197,18 @@ void update(void){
         // vertices after transformation
         float avg_depth = (transformed_vertices[0].z + transformed_vertices[1].z + transformed_vertices[2].z) / 3.0; 
 
+        float light_intensity_factor = -1 * vec3_dot(vector_normal, light.direction);
+
+        // calculating the triangle color based on the light angle
+        uint32_t triangle_color = light_apply_intensity(mesh_face.color, light_intensity_factor);
+
         triangle_t projected_triangle = {
             .points = {
                 { projected_points[0].x, projected_points[0].y },
                 { projected_points[1].x, projected_points[1].y },
                 { projected_points[2].x, projected_points[2].y },
             },
-            .color = mesh_face.color,
+            .color = triangle_color,
             .avg_depth = avg_depth 
         };
         array_push(triangles_to_render, projected_triangle);
