@@ -113,7 +113,7 @@ void update(void){
     triangles_to_render = NULL;
 
     mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
+    // mesh.rotation.y += 0.01;
     // mesh.rotation.z += 0.01;
 
     // mesh.translation.x += 0.01;
@@ -293,7 +293,7 @@ void render(void){
                 triangle.points[2].y,
                 triangle.tex_coords[2].u,
                 triangle.tex_coords[2].v,
-                triangle.color
+                mesh_texture
             );
         }
 
