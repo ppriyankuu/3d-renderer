@@ -104,7 +104,28 @@ void draw_textured_triangle(
             }
 
             for(int x = x_start; x < x_end; ++x){
-                draw_pixel(x, y, 0xFFFF00FF);
+                draw_pixel(x, y, (x % 2 == 0 && y % 2 == 0) ? 0xFFFF00FF : 0xFF000000);
+            }
+        }
+    }
+
+    inv_slope_1 = 0;
+    inv_slope_2 = 0;
+
+    if(y2 - y1 != 0) inv_slope_1 = (float)(x2 - x1) / abs(y2 - y1);
+    if(y2 - y0 != 0) inv_slope_2 = (float)(x2 - x0) / abs(y2 - y0);
+
+    if(y2 - y1 != 0){
+        for(int y = y1; y <= y2; ++y){
+            int x_start = x1 + (y - y1) * inv_slope_1;
+            int x_end = x0 + (y - y0) * inv_slope_2;
+
+            if(x_end < x_start){
+                int_swap(&x_start, &x_end);
+            }
+
+            for(int x = x_start; x < x_end; ++x){
+                draw_pixel(x, y, (x % 2 == 0 && y % 2 == 0) ? 0xFFFF00FF : 0xFF000000);
             }
         }
     }
