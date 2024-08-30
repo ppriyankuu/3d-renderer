@@ -22,29 +22,29 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/ppriyankuu/3d-renderer
-    cd 3d-renderer
+        git clone https://github.com/ppriyankuu/3d-renderer
+        cd 3d-renderer
     ```
 
 2. **Install SDL2:**
 
     - On `Debian-based` systems:
         ```sh
-        sudo apt-get install libsdl2-dev
+            sudo apt-get install libsdl2-dev
         ```
 
     - On `macOS` using Homebrew:
         ```sh
-        brew install sdl2
+            brew install sdl2
         ```
 
     - On `Windows`, download the SDL2 development libraries from the [SDL website](https://www.libsdl.org/download-2.0.php) and follow the installation instructions.
 
 3. **Build the project:**
     ```sh
-    make build 
+        make build 
    ```
    or
    ```sh
-   make
+        make
    ```
