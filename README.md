@@ -15,8 +15,8 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
 
 ## Prerequisites
 
-- C compiler (e.g., GCC)
-- SDL2 library
+- `C compiler` (e.g., GCC)
+- `SDL2` library
 
 ## Installation
 
@@ -28,17 +28,17 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
 
 2. **Install SDL2:**
 
-    - On Debian-based systems:
+    - On `Debian-based` systems:
         ```sh
         sudo apt-get install libsdl2-dev
         ```
 
-    - On macOS using Homebrew:
+    - On `macOS` using Homebrew:
         ```sh
         brew install sdl2
         ```
 
-    - On Windows, download the SDL2 development libraries from the [SDL website](https://www.libsdl.org/download-2.0.php) and follow the installation instructions.
+    - On `Windows`, download the SDL2 development libraries from the [SDL website](https://www.libsdl.org/download-2.0.php) and follow the installation instructions.
 
 3. **Build the project:**
     ```sh
@@ -48,4 +48,3 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
    ```sh
    make
    ```
-
