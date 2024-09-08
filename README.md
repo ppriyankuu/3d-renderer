@@ -38,7 +38,7 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
         $ brew install sdl2
         ```
 
-    - On `Windows`, download the SDL2 development libraries from the [SDL website](https://www.libsdl.org/download-2.0.php) and follow the installation instructions.
+    - On `Windows`, download the `SDL2 development libraries` from the [SDL website](https://www.libsdl.org/download-2.0.php) and follow the installation instructions.
 
 3. **Build the project:**
     ```sh
