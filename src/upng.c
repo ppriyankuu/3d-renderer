@@ -1001,6 +1001,7 @@ upng_error upng_decode(upng_t* upng)
 	while (chunk < upng->source.buffer + upng->source.size) {
 		unsigned long length;
 		const unsigned char *data;	/*the data in the chunk */
+		(void)data;
 
 		/* make sure chunk header is not larger than the total compressed */
 		if ((unsigned long)(chunk - upng->source.buffer + 12) > upng->source.size) {
