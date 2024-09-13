@@ -110,9 +110,9 @@ void update(void){
 
     triangles_to_render = NULL;
 
-    // mesh.rotation.x += 0.01;
+    mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.01;
-    // mesh.rotation.z += 0.01;
+    mesh.rotation.z += 0.005;
 
     // mesh.translation.x += 0.01;
     // mesh.translation.y += 0.01;
@@ -134,9 +134,9 @@ void update(void){
         face_t mesh_face = mesh.faces[i];
 
         vec3_t face_vertices[3];
-        face_vertices[0] = mesh.vertices[mesh_face.a - 1];
-        face_vertices[1] = mesh.vertices[mesh_face.b - 1];
-        face_vertices[2] = mesh.vertices[mesh_face.c - 1];
+        face_vertices[0] = mesh.vertices[mesh_face.a];
+        face_vertices[1] = mesh.vertices[mesh_face.b];
+        face_vertices[2] = mesh.vertices[mesh_face.c];
 
         vec4_t transformed_vertices[3];
 
