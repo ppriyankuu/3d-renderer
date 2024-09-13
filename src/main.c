@@ -49,8 +49,8 @@ void setup(void){
     // initialising the perspective projection matrix
     projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-    load_cube_mesh_data();
-    // load_obj_file_data("./assets/f22.obj");
+    // load_cube_mesh_data();
+    load_obj_file_data("./assets/cube.obj");
     load_png_texture_data("./assets/cube.png");
 }
 
@@ -328,6 +328,7 @@ void render(void){
 
 void free_resources(void){
     free(color_buffer);
+    upng_free(png_texture);
     array_free(mesh.faces);
     array_free(mesh.vertices);
 }
