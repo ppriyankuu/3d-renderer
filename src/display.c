@@ -11,6 +11,7 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
 uint32_t* color_buffer = NULL;
+float* z_buffer = NULL;
 SDL_Texture* color_buffer_texture = NULL;
 
 // USER-DEFINED FUNCTIONS
@@ -148,6 +149,14 @@ void clear_color_buffer(uint32_t color){
         for(int x = 0; x < window_width; ++x){
             // because the color_buffer is a 2D matrix represented using an array
             color_buffer[(window_width * y) + x] = color;
+        }
+    }
+}
+
+void clear_z_buffer(void) {
+    for(int y = 0; y < window_height; ++y){
+        for(int x = 0; x < window_width; ++x){
+            z_buffer[(window_width * y) + x] = 1.0;
         }
     }
 }

@@ -30,7 +30,8 @@ void setup(void){
     cull_method = CULL_BACKFACE; 
 
     // allocating the memory (in bytes) to hold the color_buffer
-    color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
+    color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
+    z_buffer = (float*)malloc(sizeof(float) * window_width * window_height);
 
     // creating the SDL_Texture that is used to display the color_buffer
     color_buffer_texture = SDL_CreateTexture(
@@ -50,8 +51,8 @@ void setup(void){
     projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/crab.obj");
-    load_png_texture_data("./assets/crab.png");
+    load_obj_file_data("./assets/f22.obj");
+    load_png_texture_data("./assets/f22.png");
 }
 
 // for input validation and processing
@@ -235,15 +236,6 @@ void update(void){
     // sorting the triangles to render by their average depth
     int num_of_triangles = array_length(triangles_to_render);
     sort_triangles(triangles_to_render, num_of_triangles);
-    // for(int i = 0; i < num_of_triangles; ++i){
-    //     for(int j = i; j < num_of_triangles; ++j){
-    //         if(triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth){
-    //             triangle_t temp =  triangles_to_render[i];
-    //             triangles_to_render[i] = triangles_to_render[j];
-    //             triangles_to_render[j] = temp;
-    //         }
-    //     }
-    // }
 }
 
 // handling the rendering process
@@ -319,6 +311,7 @@ void render(void){
     
     render_color_buffer();
     clear_color_buffer(0xFF000000);
+    clear_z_buffer();
 
     // this function updates the screen with any rendering performed  
     // since the previous call. it swaps the back buffer with the fron buffer,
@@ -328,6 +321,7 @@ void render(void){
 
 void free_resources(void){
     free(color_buffer);
+    free(z_buffer);
     upng_free(png_texture);
     array_free(mesh.faces);
     array_free(mesh.vertices);
