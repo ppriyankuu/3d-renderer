@@ -12,7 +12,7 @@ This project is a 3D renderer written in C (from scratch) that takes an input ob
 
 - Load .obj files to render 3D models.
 - Convert 3D models into 2D images.
-- Display rendered images using SDL.
+- Displays rendered images using SDL.
 
 ## Prerequisites
 
